@@ -41,21 +41,21 @@ export const sidebarItems: NavGroup[] = [
     id: 2,
     label: "Gefr Monitoring",
     items: [
-      // {
-      //   title: "2G NOP",
-      //   url: "#",
-      //   icon: Fingerprint,
-      //   subItems: [
-      //     {
-      //       title: "2G NOP Level Daily",
-      //       url: "/gefr/monitoring/v2/2g/nop/daily",
-      //     },
-      //     {
-      //       title: "2G NOP Level Hourly",
-      //       url: "/gefr/monitoring/v2/2g/nop/hourly",
-      //     },
-      //   ],
-      // },
+      {
+        title: "2G NOP",
+        url: "#",
+        icon: Fingerprint,
+        subItems: [
+          {
+            title: "2G NOP Level Daily",
+            url: "/gefr/monitoring/v2/2g/nop/daily",
+          },
+          // {
+          //   title: "2G NOP Level Hourly",
+          //   url: "/gefr/monitoring/v2/2g/nop/hourly",
+          // },
+        ],
+      },
       {
         title: "2G Site",
         url: "#",

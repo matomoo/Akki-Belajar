@@ -21,19 +21,17 @@ export function AccountSwitcher() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
 
-  const navUser = user
-    ? {
-        name: user.email.split("@")[0], // Use email username as fallback
-        email: user.email,
-        avatar: user.user_metadata?.avatar_url || "", // Support avatar from metadata
-        role: user.user_metadata?.role || "user",
-      }
-    : {
-        name: "Guest",
-        email: "guest@example.com",
-        avatar: "",
-        role: "guest",
-      };
+  if (!user) {
+    return null;
+  }
+
+  const navUser = {
+    name: user.email.split("@")[0], // Use email username as fallback
+    email: user.email,
+    avatar: user.user_metadata?.avatar_url || "", // Support avatar from metadata
+    role: user.user_metadata?.role || "user",
+  }
+
 
   const handleLogout = async () => {
     try {

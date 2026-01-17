@@ -12,7 +12,10 @@ export async function GET(request: Request) {
   const batch = searchParams.get("batch") || "All";
 
   if (!tgl_1 || !tgl_2) {
-    return NextResponse.json({ error: "Both tgl_1 and tgl_2 parameters are required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Both tgl_1 and tgl_2 parameters are required" },
+      { status: 400 }
+    );
   }
 
   let formattedTgl1: string;
@@ -23,7 +26,8 @@ export async function GET(request: Request) {
     formattedTgl2 = new Date(tgl_2).toISOString();
     const queryBatch = `%${batch}%`;
 
-    const batchCondition = batch !== "All" ? sql`AND t2."Batch" LIKE ${queryBatch}` : sql``;
+    const batchCondition =
+      batch !== "All" ? sql`AND t2."Batch" LIKE ${queryBatch}` : sql``;
 
     const result = await db_gefrdb_suldbv1.execute<Agg2gModel>(sql`
           SELECT
@@ -84,7 +88,6 @@ export async function GET(request: Request) {
             SUM(t1."NF_ICM Band 1-3_denum") AS "DENUM_IB_BAND_1_3",
             SUM(t1."NF_ICM Band 4-5_num") AS "NUM_IB_BAND_4_5",
             SUM(t1."NF_ICM Band 4-5_denum") AS "DENUM_IB_BAND_4_5",
-            MAX(t3."PD Packet Loss Rate(%)") AS "PACKET_LOSS",
             '1' AS DENUMBY1
           FROM
             "dy2G" t1
@@ -97,13 +100,6 @@ export async function GET(request: Request) {
               ELSE
                 "substring" (t1."BTS Name" :: TEXT, 1, 6)
             END = t2."Site ID"
-            LEFT JOIN "pl2G" t3 ON
-            CASE
-              WHEN "substring" (t3."Office Name" :: TEXT, 2, 1) IN ('_', '-') THEN
-                "substring" (t3."Office Name" :: TEXT, 3, 6)
-              ELSE
-                "substring" (t3."Office Name" :: TEXT, 1, 6)
-            END = t2."Site ID" AND t3."Begin Time" = t1."Begin Time"
           WHERE
             t1."Begin Time" >= ${formattedTgl1} :: TIMESTAMP
             AND t1."Begin Time" <= ${formattedTgl2} :: TIMESTAMP
@@ -120,6 +116,9 @@ export async function GET(request: Request) {
 
     return NextResponse.json(result);
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 }
+    );
   }
 }

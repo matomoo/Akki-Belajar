@@ -75,18 +75,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const variant = isSynced ? sidebarVariant : props.variant;
   const collapsible = isSynced ? sidebarCollapsible : props.collapsible;
 
+  if (!user) {
+    return null;
+  }
   // Map authenticated user to NavUser format with profile data
-  const navUser = user
-    ? {
-        name: profile?.full_name || user.email, // Use full_name from profile, fallback to email
-        email: user.email,
-        avatar: profile?.avatar_url || user.user_metadata?.avatar_url || "", // Support avatar from profile or metadata
-      }
-    : {
-        name: "Guest",
-        email: "guest@example.com",
-        avatar: "",
-      };
+  const navUser = {
+    name: profile?.full_name || user.email, // Use full_name from profile, fallback to email
+    email: user.email,
+    avatar: profile?.avatar_url || user.user_metadata?.avatar_url || "", // Support avatar from profile or metadata
+  }
+
 
   return (
     <Sidebar {...props} variant={variant} collapsible={collapsible}>
